@@ -9,40 +9,20 @@ pipeline {
         }
         stage('Build') {
             steps {
-
-                        powershell 'gradlew build'
-                
+                powershell './gradlew.bat clean build'  // Ensure you're using gradlew.bat for Windows
             }
         }
         stage('Test') {
             steps {
-                
-                        powershell 'gradlew test'
-                  
+                powershell './gradlew.bat test'  // Again, use gradlew.bat
             }
         }
-        stage('Deploy') {
-            steps {                
-                        powershell 'java -jar build/libs/hello-world-java-V1.jar'
-                 }           
-        }
-    
-}
+    }
 
-post {
+    post {
         always {
             echo 'Cleaning up workspace'
-            deleteDir() // Clean up the workspace after the build
-        }
-        success {
-            echo 'Build succeeded!!'
-            // You could add notification steps here, e.g., send an email
-        }
-        failure {
-            echo 'Build failed!!'
-            // You could add notification steps here, e.g., send an email or Slack message
+            deleteDir()
         }
     }
-    }
-
-
+}
